@@ -1,44 +1,46 @@
 import React from 'react';
-import { Headphones, Music2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Music2, Flame, Sparkles, Newspaper, ChevronRight } from 'lucide-react';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { Navigation } from '@/components/layout/Navigation';
 import { PlaylistSidebar } from '@/components/playlist/PlaylistSidebar';
 import { LyricsDisplay } from '@/components/lyrics/LyricsDisplay';
 import { AlbumCover } from '@/components/common/AlbumCover';
 import { AudioSpectrum } from '@/components/visualizer/AudioSpectrum';
+import { PlaylistCard } from '@/components/cards/PlaylistCard';
+import { SongCard } from '@/components/cards/SongCard';
+import { ArtistCard } from '@/components/cards/ArtistCard';
 import { usePlayerStore } from '@/store/usePlayerStore';
+import { hotPlaylists } from '@/data/playlists';
+import { recommendSongs, newSongs } from '@/data/songs';
+import { mockArtists } from '@/data/artists';
 
 export const Home: React.FC = () => {
+  const navigate = useNavigate();
   const { currentSong, isPlaying, frequencyData } = usePlayerStore();
+
+  const quickLinks = [
+    { path: '/hot', label: '热门歌单', icon: Flame, color: 'from-neon-pink to-neon-purple' },
+    { path: '/recommend', label: '推荐歌曲', icon: Sparkles, color: 'from-neon-cyan to-neon-purple' },
+    { path: '/new', label: '新歌首发', icon: Newspaper, color: 'from-neon-purple to-neon-pink' },
+  ];
 
   return (
     <div className="min-h-screen pb-32">
-      <header className="fixed top-0 left-0 right-0 z-40 glass-card border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-neon-pink to-neon-cyan neon-glow-pink">
-              <Headphones className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="font-display font-bold text-xl gradient-text">
-                NEON MUSIC
-              </h1>
-              <p className="text-xs text-white/50">沉浸式音乐体验</p>
-            </div>
-          </div>
-          <div className="hidden md:flex items-center gap-2 text-white/40 text-sm">
-            <Music2 className="w-4 h-4" />
-            <span>高品质 · 无损音质</span>
-          </div>
-        </div>
-      </header>
+      <PageHeader title="首页" />
 
       <main className="pt-20 px-4">
         <div className="max-w-7xl mx-auto">
+          <div className="mb-6">
+            <Navigation />
+          </div>
+
           <div className="flex flex-col lg:flex-row gap-6">
             <aside className="w-full lg:w-80 flex-shrink-0">
               <PlaylistSidebar />
             </aside>
 
-            <section className="flex-1 flex flex-col gap-6">
+            <section className="flex-1 flex flex-col gap-8">
               <div className="glass-card rounded-2xl p-6 animate-fade-in">
                 <AudioSpectrum frequencyData={frequencyData} />
               </div>
@@ -78,6 +80,106 @@ export const Home: React.FC = () => {
 
                 <div className="glass-card rounded-2xl p-6 h-[500px] overflow-hidden animate-slide-up">
                   <LyricsDisplay />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {quickLinks.map((link) => {
+                  const Icon = link.icon;
+                  return (
+                    <button
+                      key={link.path}
+                      onClick={() => navigate(link.path)}
+                      className="glass-card rounded-2xl p-6 flex items-center gap-4 hover:scale-105 transition-all duration-300 group"
+                    >
+                      <div className={`p-4 rounded-xl bg-gradient-to-br ${link.color}`}>
+                        <Icon className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <h3 className="text-white font-bold text-lg">{link.label}</h3>
+                        <p className="text-white/50 text-sm">点击查看更多</p>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-white/30 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Flame className="w-5 h-5 text-neon-pink" />
+                    <h2 className="text-xl font-display font-bold text-white">热门歌单</h2>
+                  </div>
+                  <button
+                    onClick={() => navigate('/hot')}
+                    className="flex items-center gap-1 text-white/50 hover:text-neon-pink transition-colors text-sm"
+                  >
+                    查看更多 <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                  {hotPlaylists.slice(0, 5).map((playlist) => (
+                    <PlaylistCard key={playlist.id} playlist={playlist} />
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-neon-cyan" />
+                    <h2 className="text-xl font-display font-bold text-white">推荐歌曲</h2>
+                  </div>
+                  <button
+                    onClick={() => navigate('/recommend')}
+                    className="flex items-center gap-1 text-white/50 hover:text-neon-cyan transition-colors text-sm"
+                  >
+                    查看更多 <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="glass-card rounded-2xl p-4">
+                  <div className="grid gap-2">
+                    {recommendSongs.slice(0, 5).map((song, index) => (
+                      <SongCard key={song.id} song={song} index={index + 1} showIndex />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Newspaper className="w-5 h-5 text-neon-purple" />
+                    <h2 className="text-xl font-display font-bold text-white">热门歌手</h2>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
+                  {mockArtists.slice(0, 8).map((artist) => (
+                    <ArtistCard key={artist.id} artist={artist} />
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Music2 className="w-5 h-5 text-neon-pink" />
+                    <h2 className="text-xl font-display font-bold text-white">新歌首发</h2>
+                  </div>
+                  <button
+                    onClick={() => navigate('/new')}
+                    className="flex items-center gap-1 text-white/50 hover:text-neon-pink transition-colors text-sm"
+                  >
+                    查看更多 <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="glass-card rounded-2xl p-4">
+                  <div className="grid gap-2">
+                    {newSongs.slice(0, 5).map((song, index) => (
+                      <SongCard key={song.id} song={song} index={index + 1} showIndex />
+                    ))}
+                  </div>
                 </div>
               </div>
             </section>

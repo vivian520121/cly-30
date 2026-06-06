@@ -41,6 +41,7 @@ export interface PlayerActions {
   playSong: (song: Song, index?: number) => void;
   setCurrentTime: (time: number) => void;
   setDuration: (duration: number) => void;
+  setPlaylist: (songs: Song[]) => void;
 }
 
 export interface FavoritesState {
@@ -53,3 +54,46 @@ export interface PlaylistState {
   currentView: 'all' | 'favorites';
   setCurrentView: (view: 'all' | 'favorites') => void;
 }
+
+export interface Artist {
+  id: string;
+  name: string;
+  avatarUrl: string;
+  description: string;
+  genre: string;
+  followers: number;
+  songIds: string[];
+}
+
+export interface Playlist {
+  id: string;
+  name: string;
+  coverUrl: string;
+  description: string;
+  playCount: number;
+  songIds: string[];
+  creator: string;
+  createTime: string;
+  tags: string[];
+}
+
+export interface SearchHistoryItem {
+  id: string;
+  keyword: string;
+  timestamp: number;
+}
+
+export type SearchTab = 'all' | 'songs' | 'artists' | 'playlists';
+
+export interface SearchState {
+  keyword: string;
+  activeTab: SearchTab;
+  history: SearchHistoryItem[];
+  setKeyword: (keyword: string) => void;
+  setActiveTab: (tab: SearchTab) => void;
+  addHistory: (keyword: string) => void;
+  removeHistory: (id: string) => void;
+  clearHistory: () => void;
+}
+
+export type PageType = 'hot' | 'recommend' | 'new';

@@ -103,4 +103,8 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   setDuration: (duration: number) => set({ duration }),
 
   setFrequencyData: (data: number[]) => set({ frequencyData: data }),
+
+  setPlaylist: (songs: Song[]) => {
+    set({ playlist: songs, currentIndex: 0 });
+  },
 }));
