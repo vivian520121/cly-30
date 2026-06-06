@@ -1,6 +1,8 @@
 import { Song } from '@/types';
 import { generateLyrics } from './lyrics';
 
+const cacheBuster = Date.now();
+
 export const mockSongs: Song[] = [
   {
     id: '1',
@@ -8,8 +10,8 @@ export const mockSongs: Song[] = [
     artist: '逃跑计划',
     album: '世界',
     coverUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=music%20album%20cover%20night%20starry%20sky%20neon%20galaxy&image_size=square_hd',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-    duration: 252,
+    audioUrl: `/audio-proxy/html/horse.mp3?t=${cacheBuster}`,
+    duration: 372,
     lyrics: generateLyrics('夜空中最亮的星'),
   },
   {
@@ -18,8 +20,8 @@ export const mockSongs: Song[] = [
     artist: 'Beyond',
     album: '乐与怒',
     coverUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=music%20album%20cover%20ocean%20sky%20horizon%20sunset&image_size=square_hd',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-    duration: 326,
+    audioUrl: `/audio-proxy/html/horse.mp3?t=${cacheBuster + 1}`,
+    duration: 366,
     lyrics: generateLyrics('海阔天空'),
   },
   {
@@ -28,8 +30,8 @@ export const mockSongs: Song[] = [
     artist: '周杰伦',
     album: '叶惠美',
     coverUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=music%20album%20cover%20sunny%20day%20blue%20sky%20white%20clouds&image_size=square_hd',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
-    duration: 269,
+    audioUrl: `/audio-proxy/html/horse.mp3?t=${cacheBuster + 2}`,
+    duration: 348,
     lyrics: generateLyrics('晴天'),
   },
   {
@@ -38,8 +40,8 @@ export const mockSongs: Song[] = [
     artist: '朴树',
     album: '猎户星座',
     coverUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=music%20album%20cover%20country%20road%20sunset&image_size=square_hd',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
-    duration: 298,
+    audioUrl: `/audio-proxy/html/horse.mp3?t=${cacheBuster + 3}`,
+    duration: 333,
     lyrics: generateLyrics('平凡之路'),
   },
   {
@@ -48,8 +50,8 @@ export const mockSongs: Song[] = [
     artist: '周杰伦',
     album: '魔杰座',
     coverUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=music%20album%20cover%20rice%20field%20golden%20sunshine&image_size=square_hd',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
-    duration: 223,
+    audioUrl: `/audio-proxy/html/horse.mp3?t=${cacheBuster + 4}`,
+    duration: 318,
     lyrics: generateLyrics('稻香'),
   },
   {
@@ -58,8 +60,8 @@ export const mockSongs: Song[] = [
     artist: 'Beyond',
     album: '命运派对',
     coverUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=music%20album%20cover%20glowing%20years%20neon%20light&image_size=square_hd',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
-    duration: 285,
+    audioUrl: `/audio-proxy/html/horse.mp3?t=${cacheBuster + 5}`,
+    duration: 345,
     lyrics: generateLyrics('光辉岁月'),
   },
 ];

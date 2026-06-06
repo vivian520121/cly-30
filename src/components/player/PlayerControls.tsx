@@ -8,6 +8,7 @@ import { PlayModeToggle } from './PlayModeToggle';
 import { AlbumCover } from '@/components/common/AlbumCover';
 import { useAudioAnalyzer } from '@/hooks/useAudioAnalyzer';
 
+
 export const PlayerControls: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [useDemoMode, setUseDemoMode] = useState(false);
@@ -53,7 +54,7 @@ export const PlayerControls: React.FC = () => {
             setDuration(currentSong.duration);
           }
         }
-      }, 2000);
+      }, 10000);
     }
 
     return () => {
@@ -248,7 +249,6 @@ export const PlayerControls: React.FC = () => {
         ref={audioRef}
         src={currentSong.audioUrl}
         preload="metadata"
-        crossOrigin="anonymous"
       />
       <div className="fixed bottom-0 left-0 right-0 z-50">
         <div className="glass-card border-t border-white/10 px-4 md:px-6 py-3">

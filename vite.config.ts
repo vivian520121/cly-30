@@ -8,6 +8,32 @@ export default defineConfig({
   build: {
     sourcemap: 'hidden',
   },
+  server: {
+    proxy: {
+      '/audio-proxy': {
+        target: 'https://www.w3schools.com',
+        changeOrigin: true,
+        secure: false,
+        followRedirects: true,
+        rewrite: (path) => path.replace(/^\/audio-proxy/, ''),
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            proxyReq.setHeader('Referer', 'https://www.w3schools.com/');
+            proxyReq.setHeader('Origin', 'https://www.w3schools.com');
+            proxyReq.setHeader('Accept', 'audio/mpeg,audio/mp3,audio/*;q=0.9,*/*;q=0.8');
+          });
+          proxy.on('proxyRes', (proxyRes) => {
+            proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+            proxyRes.headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS';
+            proxyRes.headers['Access-Control-Allow-Headers'] = 'Content-Type';
+          });
+          proxy.on('error', (err) => {
+            console.error('Proxy error:', err);
+          });
+        },
+      },
+    },
+  },
   plugins: [
     react({
       babel: {
