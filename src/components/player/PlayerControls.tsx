@@ -120,23 +120,54 @@ export const PlayerControls: React.FC = () => {
     };
   }, [playMode, next, play, pause, setCurrentTime, setDuration, useDemoMode, currentSong]);
 
+  const lastIsPlayingRef = useRef<boolean | null>(null);
+  const lastVolumeRef = useRef<number | null>(null);
+  const lastIsMutedRef = useRef<boolean | null>(null);
+  const currentTimeRef = useRef(currentTime);
+
+  React.useEffect(() => {
+    currentTimeRef.current = currentTime;
+  }, [currentTime]);
+
+  useEffect(() => {
+    lastIsPlayingRef.current = null;
+    lastVolumeRef.current = null;
+    lastIsMutedRef.current = null;
+    currentTimeRef.current = 0;
+    if (currentSong) {
+      setCurrentTime(0);
+      setDuration(currentSong.duration);
+    }
+  }, [currentSong?.id, currentSong, setCurrentTime, setDuration]);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !currentSong) return;
-
-    audio.volume = isMuted ? 0 : volume;
 
     if (audio.error) {
       setUseDemoMode(true);
     }
 
-    if (isPlaying) {
-      audio.play().catch((err) => {
-        console.error('Playback error:', err);
-        setUseDemoMode(true);
-      });
-    } else {
-      audio.pause();
+    const volumeChanged = lastVolumeRef.current !== volume || lastIsMutedRef.current !== isMuted;
+    if (volumeChanged) {
+      audio.volume = isMuted ? 0 : volume;
+      lastVolumeRef.current = volume;
+      lastIsMutedRef.current = isMuted;
+    }
+
+    const playStateChanged = lastIsPlayingRef.current !== isPlaying;
+    if (playStateChanged) {
+      if (!useDemoMode) {
+        if (isPlaying) {
+          audio.play().catch((err) => {
+            console.error('Playback error:', err);
+            setUseDemoMode(true);
+          });
+        } else {
+          audio.pause();
+        }
+      }
+      lastIsPlayingRef.current = isPlaying;
     }
 
     if (useDemoMode) {
@@ -147,15 +178,17 @@ export const PlayerControls: React.FC = () => {
 
       if (isPlaying) {
         demoTimeIntervalRef.current = window.setInterval(() => {
-          const nextTime = currentTime + 0.1;
+          const nextTime = currentTimeRef.current + 0.1;
           if (nextTime >= duration) {
             if (playMode === 'single') {
               setCurrentTime(0);
+              currentTimeRef.current = 0;
             } else {
               next();
             }
           } else {
             setCurrentTime(nextTime);
+            currentTimeRef.current = nextTime;
           }
         }, 100);
       }
@@ -167,7 +200,7 @@ export const PlayerControls: React.FC = () => {
         demoTimeIntervalRef.current = null;
       }
     };
-  }, [currentSong, isPlaying, volume, isMuted, duration, playMode, next, setCurrentTime, currentTime, useDemoMode]);
+  }, [currentSong, isPlaying, volume, isMuted, duration, playMode, next, setCurrentTime, useDemoMode]);
 
   useEffect(() => {
     const audio = audioRef.current;
