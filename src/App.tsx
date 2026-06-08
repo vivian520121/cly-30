@@ -7,6 +7,7 @@ import { SearchResults } from "@/pages/SearchResults";
 import { SongDetail } from "@/pages/SongDetail";
 import { ArtistDetail } from "@/pages/ArtistDetail";
 import { PlaylistDetail } from "@/pages/PlaylistDetail";
+import { UploadPlaylist } from "@/pages/UploadPlaylist";
 import { PlayerControls } from "@/components/player/PlayerControls";
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/hot" element={<HotPlaylists />} />
         <Route path="/recommend" element={<RecommendSongs />} />
         <Route path="/new" element={<NewSongs />} />
+        <Route path="/upload" element={<UploadPlaylist />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/song/:id" element={<SongDetail />} />
         <Route path="/artist/:id" element={<ArtistDetail />} />

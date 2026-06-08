@@ -75,6 +75,7 @@ export interface Playlist {
   creator: string;
   createTime: string;
   tags: string[];
+  totalDuration?: number;
 }
 
 export interface SearchHistoryItem {
@@ -97,3 +98,46 @@ export interface SearchState {
 }
 
 export type PageType = 'hot' | 'recommend' | 'new';
+
+export type PlaylistFormat = 'm3u' | 'pls' | 'xspf';
+
+export interface ParsedPlaylistTrack {
+  title: string;
+  artist: string;
+  album?: string;
+  duration?: number;
+  filePath?: string;
+}
+
+export interface ParsedPlaylist {
+  name: string;
+  format: PlaylistFormat;
+  tracks: ParsedPlaylistTrack[];
+  totalDuration: number;
+}
+
+export type UploadStatus = 'idle' | 'selecting' | 'uploading' | 'parsing' | 'success' | 'error';
+
+export interface UploadedPlaylist extends Playlist {
+  format: PlaylistFormat;
+  originalFileName: string;
+  uploadTime: string;
+  parsedTracks: ParsedPlaylistTrack[];
+}
+
+export interface UploadState {
+  status: UploadStatus;
+  progress: number;
+  error: string | null;
+  selectedFile: File | null;
+  parsedPlaylist: ParsedPlaylist | null;
+  uploadedPlaylists: UploadedPlaylist[];
+  setStatus: (status: UploadStatus) => void;
+  setProgress: (progress: number) => void;
+  setError: (error: string | null) => void;
+  setSelectedFile: (file: File | null) => void;
+  setParsedPlaylist: (playlist: ParsedPlaylist | null) => void;
+  addUploadedPlaylist: (playlist: UploadedPlaylist) => void;
+  removeUploadedPlaylist: (id: string) => void;
+  resetUpload: () => void;
+}

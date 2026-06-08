@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flame, Sparkles, Newspaper, Home } from 'lucide-react';
+import { Flame, Sparkles, Newspaper, Home, Upload } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/utils/cn';
 
@@ -8,6 +8,7 @@ const navItems = [
   { path: '/hot', label: '热门歌单', icon: Flame },
   { path: '/recommend', label: '推荐歌曲', icon: Sparkles },
   { path: '/new', label: '新歌首发', icon: Newspaper },
+  { path: '/upload', label: '上传歌单', icon: Upload },
 ];
 
 export const Navigation: React.FC = () => {

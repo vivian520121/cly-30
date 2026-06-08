@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Music2, Flame, Sparkles, Newspaper, ChevronRight } from 'lucide-react';
+import { Music2, Flame, Sparkles, Newspaper, ChevronRight, Upload } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Navigation } from '@/components/layout/Navigation';
 import { PlaylistSidebar } from '@/components/playlist/PlaylistSidebar';
@@ -23,6 +23,7 @@ export const Home: React.FC = () => {
     { path: '/hot', label: '热门歌单', icon: Flame, color: 'from-neon-pink to-neon-purple' },
     { path: '/recommend', label: '推荐歌曲', icon: Sparkles, color: 'from-neon-cyan to-neon-purple' },
     { path: '/new', label: '新歌首发', icon: Newspaper, color: 'from-neon-purple to-neon-pink' },
+    { path: '/upload', label: '上传歌单', icon: Upload, color: 'from-neon-cyan to-neon-pink' },
   ];
 
   return (
@@ -83,7 +84,7 @@ export const Home: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {quickLinks.map((link) => {
                   const Icon = link.icon;
                   return (
