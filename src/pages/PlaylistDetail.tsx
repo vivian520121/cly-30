@@ -3,16 +3,17 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Play, Shuffle, Headphones, User, Calendar, Tag, Disc } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { SongCard } from '@/components/cards/SongCard';
-import { mockPlaylists } from '@/data/playlists';
 import { mockSongs } from '@/data/songs';
 import { usePlayerStore } from '@/store/usePlayerStore';
+import { useAllPlaylists } from '@/hooks/useAllPlaylists';
 
 export const PlaylistDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { playSong, setPlaylist } = usePlayerStore();
+  const { getPlaylistById } = useAllPlaylists();
 
-  const playlist = mockPlaylists.find((p) => p.id === id);
+  const playlist = id ? getPlaylistById(id) : undefined;
   const playlistSongs = playlist
     ? mockSongs.filter((song) => playlist.songIds.includes(song.id))
     : [];

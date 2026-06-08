@@ -12,12 +12,14 @@ import { SongCard } from '@/components/cards/SongCard';
 import { ArtistCard } from '@/components/cards/ArtistCard';
 import { usePlayerStore } from '@/store/usePlayerStore';
 import { hotPlaylists } from '@/data/playlists';
+import { useAllPlaylists } from '@/hooks/useAllPlaylists';
 import { recommendSongs, newSongs } from '@/data/songs';
 import { mockArtists } from '@/data/artists';
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
   const { currentSong, isPlaying, frequencyData } = usePlayerStore();
+  const { uploadedPlaylists } = useAllPlaylists();
 
   const quickLinks = [
     { path: '/hot', label: '热门歌单', icon: Flame, color: 'from-neon-pink to-neon-purple' },
@@ -105,6 +107,28 @@ export const Home: React.FC = () => {
                   );
                 })}
               </div>
+
+              {uploadedPlaylists.length > 0 && (
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <Upload className="w-5 h-5 text-neon-cyan" />
+                      <h2 className="text-xl font-display font-bold text-white">我的歌单</h2>
+                    </div>
+                    <button
+                      onClick={() => navigate('/upload')}
+                      className="flex items-center gap-1 text-white/50 hover:text-neon-cyan transition-colors text-sm"
+                    >
+                      管理 <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {uploadedPlaylists.slice(0, 5).map((playlist) => (
+                      <PlaylistCard key={playlist.id} playlist={playlist} />
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div>
                 <div className="flex items-center justify-between mb-4">
