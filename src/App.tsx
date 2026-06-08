@@ -8,11 +8,14 @@ import { SongDetail } from "@/pages/SongDetail";
 import { ArtistDetail } from "@/pages/ArtistDetail";
 import { PlaylistDetail } from "@/pages/PlaylistDetail";
 import { UploadPlaylist } from "@/pages/UploadPlaylist";
+import { Settings } from "@/pages/Settings";
 import { PlayerControls } from "@/components/player/PlayerControls";
+import { ToastContainer } from "@/components/common/ToastContainer";
 
 export default function App() {
   return (
     <Router>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/hot" element={<HotPlaylists />} />
@@ -20,6 +23,7 @@ export default function App() {
         <Route path="/new" element={<NewSongs />} />
         <Route path="/upload" element={<UploadPlaylist />} />
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/song/:id" element={<SongDetail />} />
         <Route path="/artist/:id" element={<ArtistDetail />} />
         <Route path="/playlist/:id" element={<PlaylistDetail />} />

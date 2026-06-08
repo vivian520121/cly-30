@@ -141,3 +141,103 @@ export interface UploadState {
   removeUploadedPlaylist: (id: string) => void;
   resetUpload: () => void;
 }
+
+export interface UserAccount {
+  id: string;
+  username: string;
+  email: string;
+  avatarUrl: string;
+  displayName: string;
+  bio: string;
+  createdAt: string;
+}
+
+export type Theme = 'dark' | 'light' | 'auto';
+export type Language = 'zh-CN' | 'en-US' | 'ja-JP';
+export type AudioQuality = 'low' | 'standard' | 'high' | 'lossless';
+
+export interface SystemPreferences {
+  theme: Theme;
+  language: Language;
+  audioQuality: AudioQuality;
+  autoPlay: boolean;
+  crossfade: boolean;
+  crossfadeDuration: number;
+  volumeBoost: boolean;
+  lyricsDisplay: boolean;
+  lyricsFontSize: number;
+  showSpectrum: boolean;
+  autoUpdate: boolean;
+  minimizeToTray: boolean;
+  hardwareAcceleration: boolean;
+}
+
+export type NotificationType = 'song' | 'playlist' | 'artist' | 'system' | 'marketing';
+
+export interface NotificationSettings {
+  enabled: boolean;
+  soundEnabled: boolean;
+  desktopNotifications: boolean;
+  types: Record<NotificationType, boolean>;
+  doNotDisturb: boolean;
+  doNotDisturbStart: string;
+  doNotDisturbEnd: string;
+  emailNotifications: boolean;
+  weeklyDigest: boolean;
+}
+
+export interface PrivacySettings {
+  profileVisibility: 'public' | 'followers' | 'private';
+  showListeningHistory: boolean;
+  showFavorites: boolean;
+  showPlaylists: boolean;
+  allowDataCollection: boolean;
+  personalizedRecommendations: boolean;
+  showOnlineStatus: boolean;
+  allowMessages: 'everyone' | 'followers' | 'no_one';
+  explicitContent: boolean;
+  blockExplicit: boolean;
+}
+
+export interface SettingsState {
+  account: UserAccount;
+  preferences: SystemPreferences;
+  notifications: NotificationSettings;
+  privacy: PrivacySettings;
+  isLoading: boolean;
+  error: string | null;
+  lastSaved: number | null;
+}
+
+export interface SettingsActions {
+  setAccount: (account: Partial<UserAccount>) => void;
+  setPreferences: (preferences: Partial<SystemPreferences>) => void;
+  setNotifications: (notifications: Partial<NotificationSettings>) => void;
+  setPrivacy: (privacy: Partial<PrivacySettings>) => void;
+  updateNotificationType: (type: NotificationType, enabled: boolean) => void;
+  resetToDefaults: () => void;
+  saveSettings: () => Promise<boolean>;
+  clearError: () => void;
+  validatePassword: (password: string) => Promise<boolean>;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<boolean>;
+  logout: () => void;
+  deleteAccount: () => Promise<boolean>;
+}
+
+export interface SettingsStore extends SettingsState, SettingsActions {}
+
+export type SettingsSection = 'account' | 'preferences' | 'notifications' | 'privacy';
+
+export interface Toast {
+  id: string;
+  type: 'success' | 'error' | 'warning' | 'info';
+  message: string;
+  duration: number;
+}
+
+export interface ToastState {
+  toasts: Toast[];
+  addToast: (toast: Omit<Toast, 'id'>) => void;
+  removeToast: (id: string) => void;
+  clearToasts: () => void;
+}
