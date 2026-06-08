@@ -1,16 +1,28 @@
 import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { usePlayerStore } from '@/store/usePlayerStore';
+import { useSettings } from '@/store/useSettingsStore';
 import { findCurrentLyricIndex } from '@/utils/lyricParser';
 import { formatTime } from '@/utils/formatTime';
-import { Music } from 'lucide-react';
+import { Music, EyeOff } from 'lucide-react';
 
 export const LyricsDisplay: React.FC = () => {
   const { currentSong, currentTime, seek } = usePlayerStore();
+  const { preferences } = useSettings();
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
   const lyricLineRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const lyrics = currentSong?.lyrics || [];
+
+  if (!preferences.lyricsDisplay) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full text-white/40">
+        <EyeOff className="w-16 h-16 mb-4" />
+        <p className="text-lg">歌词显示已关闭</p>
+        <p className="text-sm mt-2">可在设置中开启歌词显示</p>
+      </div>
+    );
+  }
 
   const currentLyricIndex = useMemo(() => {
     return findCurrentLyricIndex(lyrics, currentTime);
